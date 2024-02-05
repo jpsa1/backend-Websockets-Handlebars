@@ -1,12 +1,22 @@
+//Express
 import express from "express";
+
+//Routes
 import ProductRouter from "./router/product.routes.js";
 import CartRouter from "./router/carts.routes.js";
-import viewsRouter from "./router/views.routes.js";
+import ViewsRouter from "./router/views.routes.js";
+
+//Handlebars
 import {engine} from "express-handlebars"
 import * as path from "path"
 import __dirname from "./utils.js";
-import ProductManager from "./controllers/ProductManager.js";
+
+//Web Socket
 import {Server} from "socket.io"
+
+//Manejador de productos
+import ProductManager from "./controllers/ProductManager.js";
+
 
 const app = express()
 const PORT = 8080
@@ -29,7 +39,7 @@ app.use("/", express.static(__dirname +  "/public"))
 //Routes
 app.use("/api/products", ProductRouter)
 app.use("/api/cart", CartRouter)
-app.use("/", viewsRouter)
+app.use("/", ViewsRouter)
 
 //Web socket
 const productAll = new ProductManager()
@@ -49,7 +59,7 @@ socketServer.on('connection', async socket => {
     socket.on('borrarProducto', async(idProduct)=> {
         let borrarProd = await productAll.deleteProducts(idProduct)
         console.log(borrarProd)
-        socket.emit('upDateListProduct', await productAll.getProducts())
+        socketServer.emit('upDateListProduct', await productAll.getProducts())
     })
 
 

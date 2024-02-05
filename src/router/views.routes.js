@@ -1,11 +1,11 @@
 import { Router } from "express";
 import ProductManager from "../controllers/ProductManager.js";
 
-const viewsRouter = Router()
+const ViewsRouter = Router()
 const product = new ProductManager
 
 
-viewsRouter.get("/", async (req,res) => {
+ViewsRouter.get("/", async (req,res) => {
     let allProducts = await product.getProducts()
     res.render("home", {
         title: "Product Manager",
@@ -13,9 +13,9 @@ viewsRouter.get("/", async (req,res) => {
     })
 })
 
-viewsRouter.get("/realTimeProducts", async (req, res) => {
+ViewsRouter.get("/realTimeProducts", async (req, res) => {
     let allProducts = await product.getProducts()
     res.render("realTimeProducts", {allProducts})
 })
 
-export default viewsRouter
+export default ViewsRouter
